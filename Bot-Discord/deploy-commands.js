@@ -15,8 +15,8 @@ for (const folder of commandFolders) { // Iteramos sobre el array con las carpet
 	for (const file of commandFiles) { //Iteramos sobre los archivos de una carpeta especifica (Ej: utility).
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
-		if ('comando' in command && 'execute' in command) { // Chequeamos que el comando tenga las propiedades comando y execute.
-			commands.push(command.comando.toJSON()); // Si es así creamos un json con el comando valido.
+		if ('data' in command && 'execute' in command) { // Chequeamos que el comando tenga las propiedades comando y execute.
+			commands.push(command.data.toJSON()); // Si es así creamos un json con el comando valido.
 		} else {
 			console.log(`[WARNING] El comando en ${filePath}  le falta la propiedad requerida "comando" o "execute".`);
 		}
@@ -29,12 +29,11 @@ const rest = new REST().setToken(token); // Crea una instancia del módulo REST 
 // Es la parte que REGISTRA/ACTUALIZA los comandos slash en Discord.
 (async () => { // Se ejecuta inmediatamente al cargar el script.
 	try {
-		console.log(`Started refreshing ${commands.length} application (/) commands.`);
+		console.log(`Iniciando actualización de ${commands.length} comandos (/) de aplicación.`);
 		// El método put se usa para refrescar completamente todos los comandos en el servidor con el conjunto actual.
 		const data = await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
-		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+		console.log(`Se recargaron exitosamente ${data.length} comandos (/) de aplicación.`);
 	} catch (error) {
-		// And of course, make sure you catch and log any errors!
-		console.error(error);
+		console.error('Error al desplegar comandos:', error);
 	}
 })();
