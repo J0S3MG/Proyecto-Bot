@@ -37,3 +37,4 @@ const rest = new REST().setToken(token); // Crea una instancia del módulo REST 
 		console.error('Error al desplegar comandos:', error);
 	}
 })();
+
